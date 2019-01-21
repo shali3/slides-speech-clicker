@@ -10,6 +10,7 @@
         recognition.interimResults = true;
 
         var final_transcript = '';
+        var lastClick = new Date();
 
         recognition.onresult = function (event) {
             var interim_transcript = '';
@@ -23,7 +24,8 @@
             }
             console.log('final: ' + final_transcript)
             console.log('interim: ' + interim_transcript)
-            if(interim_transcript.indexOf('next')!=-1){
+            if((new Date - lastClick) > 1000 && interim_transcript.endsWith('click')){
+                lastClick = new Date();
                 container.click();
             }
         };
