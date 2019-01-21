@@ -3,6 +3,7 @@
   "description": "Say \"next\" and \"previous\" to flip between slides",
   "version": "0.1",
   "permissions": [
+    "contextMenus",
     "activeTab"
   ],
   "background": {
