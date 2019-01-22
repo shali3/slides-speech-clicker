@@ -1,6 +1,6 @@
 {
-  "name": "Slides Speech Clicker",
-  "description": "Say \"next\" and \"previous\" to flip between slides",
+  "name": "Voice Clicker",
+  "description": "Say \"click\" to flip Google slides",
   "version": "0.1",
   "permissions": [
     "contextMenus",
