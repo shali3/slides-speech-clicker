@@ -1,2 +1,2 @@
-# slides-speech-clicker
-Say "next" and "previous" to flip between slides
+# Voice Clicker
+Say "click" to flip Google slides
