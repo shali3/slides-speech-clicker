@@ -20,7 +20,6 @@ function init() {
             "contexts": ["frame"],
             "onclick": genericOnClick
         });
-    chrome.browserAction.onClicked.addListener(startListeningOnTab);
 }
 
 
