@@ -14,7 +14,12 @@ function genericOnClick(info, tab) {
 function init() {
 
     var child1 = chrome.contextMenus.create(
-        { "title": "Start Voice Clicker", "onclick": genericOnClick });
+        {
+            "title": "Start Voice Clicker",
+            "documentUrlPatterns": ["https://docs.google.com/presentation/*/present*"],
+            "contexts": ["frame"],
+            "onclick": genericOnClick
+        });
     chrome.browserAction.onClicked.addListener(startListeningOnTab);
 }
 
