@@ -1,5 +1,15 @@
 (function () {
 
+    function debounce(func, wait = 100) {
+        let timeout;
+        return function (...args) {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => {
+                func.apply(this, args);
+            }, wait);
+        };
+    }
+
     function init() {
         var container = document.getElementsByClassName('punch-viewer-container')[0];
         if (!container) {
@@ -9,26 +19,29 @@
         recognition.continuous = true;
         recognition.interimResults = true;
 
-        var final_transcript = '';
         var lastClick = new Date();
 
-        recognition.onresult = function (event) {
-            var interim_transcript = '';
-
-            for (var i = event.resultIndex; i < event.results.length; ++i) {
-                if (event.results[i].isFinal) {
-                    final_transcript += event.results[i][0].transcript;
-                } else {
-                    interim_transcript += event.results[i][0].transcript;
-                }
-            }
-            console.log('final: ' + final_transcript)
-            console.log('interim: ' + interim_transcript)
-            if((new Date - lastClick) > 1000 && interim_transcript.endsWith('click')){
+        function checkHotword(word) {
+            console.log('checking word ' + word)
+            if ((new Date - lastClick) > 1000 && word.endsWith('click')) {
                 lastClick = new Date();
                 container.click();
             }
+        }
+        const checkHotwordDebounced = debounce(checkHotword, 100);
+        recognition.onresult = function (event) {
+            const lastResult = event.results[event.results.length - 1];
+            var interim_transcript = lastResult.isFinal ? '' : lastResult[0].transcript;
+
+            console.log('interim: ' + interim_transcript)
+            if (interim_transcript) {
+                checkHotwordDebounced(interim_transcript)
+            }
         };
+
+        recognition.onstart = function () { console.log('onstart') }
+        recognition.onerror = function (event) { console.log('onerror', event); }
+        recognition.onend = function (event) { console.log('onend', event); recognition.start(); }
         recognition.lang = 'en-US';
         recognition.start();
 
